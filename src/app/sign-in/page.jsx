@@ -27,8 +27,7 @@ const Signin = () => {
         const response = await signIn('credentials', {
             redirect: false,
             email,
-            password
-
+            password,
         });
         if (response.ok) {
             setPending(false);

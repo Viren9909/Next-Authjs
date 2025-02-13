@@ -26,6 +26,12 @@ const Profile = () => {
         )
     }
 
+    if (session?.user?.isAdmin) {
+        return (
+            <div>Admin</div>
+        )
+    }
+
     const handleSignOut = async () => {
         await signOut({
             redirect: false,

@@ -53,7 +53,8 @@ const handler = NextAuth({
                 if (!existingUser) {
                     await User.create({
                         username: profile?.name,
-                        email: profile?.email
+                        email: profile?.email,
+                        isAdmin: false
                     })
                 }
             }
@@ -63,7 +64,8 @@ const handler = NextAuth({
             if (user) {
                 token.id = user.id || user._id,
                     token.email = user.email,
-                    token.name = user.username || user.name
+                    token.name = user.username || user.name,
+                    token.isAdmin = user.isAdmin
             }
             return token;
         },
@@ -73,6 +75,7 @@ const handler = NextAuth({
                     email: token.email,
                     name: token.name,
                     picture: token.picture,
+                    isAdmin: token.isAdmin
                 }
             }
             return session;

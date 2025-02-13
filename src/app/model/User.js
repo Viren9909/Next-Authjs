@@ -12,9 +12,14 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         require: true
+    },
+    isAdmin: {
+        type: Boolean,
+        require: true,
+        default: false
     }
 });
 
-const User = mongoose.models.User ||mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;

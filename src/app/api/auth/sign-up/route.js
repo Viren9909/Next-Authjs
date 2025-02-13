@@ -5,7 +5,7 @@ import connectDB from '@/lib/dbconfig';
 
 export async function POST(req) {
 
-    const { email, username, password } = await req.json();
+    const { email, username, password, isAdmin } = await req.json();
 
     if (!password || !email || !username) {
         return NextResponse.json({
@@ -23,13 +23,6 @@ export async function POST(req) {
     try {
         await connectDB();
 
-        const sameusername = await User.findOne({ username });
-        if (sameusername) {
-            return NextResponse.json({
-                message: "User already exist with same username.",
-                success: false
-            }, { status: 400 });
-        }
         const sameuseremail = await User.findOne({ email });
         if (sameuseremail) {
             return NextResponse.json({
@@ -42,18 +35,23 @@ export async function POST(req) {
         const user = new User({
             username,
             email,
-            password: hashpassword
+            password: hashpassword,
+            isAdmin
         });
         await user.save();
 
         return NextResponse.json({
             message: "Signup Successfull.",
-            user: user,
+            user: {
+                username,
+                email,
+                isAdmin
+            },
             success: true
         }, { status: 200 });
 
     } catch (error) {
-        console.log("Internal Server Error.");
+        console.error("Internal Server Error.");
         return NextResponse.json({
             message: "Internal Server Error.",
             error: error.message,
